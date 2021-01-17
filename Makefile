@@ -6,9 +6,10 @@
 APP_DIR=api
 TEST_DIR=tests
 #get name of GIT branchse => remove 'feature/' if exists and limit to max 20 characters
-GIT_BRANCH_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed -E 's/[\/]+/-/g' | sed -E 's/feature-//g' | cut -c 1-9)
-TMP_ENV = $(GIT_BRANCH_TAG)
-ENV ?= $(shell echo $(TMP_ENV) | tr A-Z a-z | tr - _) #lowercase ENV
+#GIT_BRANCH_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed -E 's/[\/]+/-/g' | sed -E 's/feature-//g' | cut -c 1-9)
+#ENV = $(GIT_BRANCH_TAG)
+#ENV ?= $(shell echo $(TMP_ENV) | tr A-Z a-z | tr - _) #lowercase ENV
+ENV ?= dev
 AWS_DEFAULT_REGION ?= eu-west-1
 PYTHON_VERSION=python3.7
 activate = VIRTUAL_ENV_DISABLE_PROMPT=true . .venv/bin/activate;
@@ -37,11 +38,15 @@ venv:
 	touch $@
 
 requirements: venv serverless
-	$(activate) pip install -r requirements.txt #requirements which should be included into lambdas zip packages
+	$(activate) pip install -r requirements.txt #requirements which should be included into lambdas zip packages of DBMigrationLambda
+	$(activate) pip install -r api/requirements.txt #requirements which should be included into lambdas zip packages of API
 	$(activate) pip install -r other-requirements.txt #other requirements should not not be included in zip packages
 	$(activate) pip install -r tests/test-requirements.txt #unittest related requirements
 	$(activate) pip install -r load-tests/test-requirements.txt #load tests related requirements
 	touch $@
+
+clean:
+	rm -f serverless venv requirements
 
 unittest: requirements
 	$(PYTHON_EXEC) -m unittest discover ${TEST_DIR}

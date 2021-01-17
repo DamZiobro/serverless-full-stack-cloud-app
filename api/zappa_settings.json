@@ -1,11 +1,17 @@
 {
     "dev": {
+        "project_name": "simple-books-catalog-api",
         "s3_bucket": "dev-simple-book-catalog-sls-deployment-bucket",
         "app_function": "books_catalog_api.app"
     },
-    "task_2_ad": {
+    "uat": {
         "project_name": "simple-books-catalog-api",
-        "s3_bucket": "dev-simple-book-catalog-sls-deployment-bucket",
+        "s3_bucket": "uat-simple-book-catalog-sls-deployment-bucket",
+        "app_function": "books_catalog_api.app"
+    },
+    "prd": {
+        "project_name": "simple-books-catalog-api",
+        "s3_bucket": "prd-simple-book-catalog-sls-deployment-bucket",
         "app_function": "books_catalog_api.app"
     }
 }

@@ -44,6 +44,11 @@ package:
         - package.json
         - package-lock.json
         - README.md
+        - .venv/**
+        - load-tests/**
+        - htmlcov/**
+        - docs/**
+        - tests/**
 
 functions:
   DBMigration:
