@@ -1,5 +1,11 @@
-Serverless AWS Fargate ECS Task + AWS Lambda 
+Serverless DevOps-based shell app: Vue.js UI + Flask RESTful API + RDS Aurora PostgreSQL database
 ==================
+
+Mention:
+ * separation of concerns: db, api, ui (separation of deployment, tests, code)
+ * git flow for releases 
+ * CI/CD
+
 
 **CI/CD status**:
 ![](https://github.com/DamZiobro/serverless-aws-rest-api/workflows/CI/badge.svg)
