@@ -1,5 +1,7 @@
 Get single book from database based on book_id
 ---
+produces:
+    - application/json
 definitions:
   Books:
     type: array

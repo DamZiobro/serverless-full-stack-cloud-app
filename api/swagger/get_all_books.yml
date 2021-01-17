@@ -1,5 +1,7 @@
 Get all books from database
 ---
+produces:
+    - application/json
 parameters:
   - name: book_id
     in: path

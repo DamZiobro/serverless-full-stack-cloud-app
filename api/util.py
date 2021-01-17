@@ -9,6 +9,7 @@
 import os
 import boto3
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 def get_account_id():
     """
@@ -16,7 +17,7 @@ def get_account_id():
     """
     return boto3.client('sts').get_caller_identity().get('Account')
 
-def get_sqlalchemy_engine():
+def get_sqlalchemy_session():
 
     account_id = get_account_id()
     region = os.getenv("region")
@@ -30,8 +31,7 @@ def get_sqlalchemy_engine():
                            echo=True,
                            connect_args=dict(aurora_cluster_arn=cluster_arn, secret_arn=secret_arn))
 
-    #TODO - remove me later
-    with engine.connect() as conn:
-        for result in conn.execute("select * from pg_catalog.pg_tables"):
-            print(result)
-    return engine
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    return session

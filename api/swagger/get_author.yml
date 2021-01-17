@@ -1,5 +1,7 @@
 Get single author from database based on author_id
 ---
+produces:
+    - application/json
 definitions:
   Authors:
     type: array

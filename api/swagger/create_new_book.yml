@@ -1,6 +1,10 @@
 Create new book in the database
 ---
 summary: Create book in the database
+consumes:
+    - application/json
+produces:
+    - application/json
 parameters:
   - name: body
     in: body
@@ -11,8 +15,6 @@ definitions:
   Book:
     type: object
     properties:
-        book_id:
-            type: integer
         title:
             type: string
         description:

@@ -1,5 +1,7 @@
 Get all authors from database
 ---
+produces:
+    - application/json
 parameters:
   - name: author_id
     in: path
