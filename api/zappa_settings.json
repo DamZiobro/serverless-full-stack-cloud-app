@@ -2,16 +2,58 @@
     "dev": {
         "project_name": "simple-books-catalog-api",
         "s3_bucket": "dev-simple-book-catalog-sls-deployment-bucket",
-        "app_function": "books_catalog_api.app"
+        "app_function": "books_catalog_api.app",
+        "log_level": "INFO",
+        "aws_environment_variables": {
+            "ENV": "dev",
+            "db_name": "rds_simple_book_catalog",
+            "region": "eu-west-1"
+        },
+        "extra_permissions": [{
+            "Effect": "Allow",
+            "Action": [
+                "rds-data:*",
+                "secretsmanager:GetSecretValue"
+            ], 
+            "Resource": "*"
+        }]
     },
     "uat": {
         "project_name": "simple-books-catalog-api",
         "s3_bucket": "uat-simple-book-catalog-sls-deployment-bucket",
-        "app_function": "books_catalog_api.app"
+        "app_function": "books_catalog_api.app",
+        "log_level": "INFO",
+        "aws_environment_variables": {
+            "ENV": "uat",
+            "db_name": "rds_simple_book_catalog",
+            "region": "eu-west-1"
+        },
+        "extra_permissions": [{
+            "Effect": "Allow",
+            "Action": [
+                "rds-data:*",
+                "secretsmanager:GetSecretValue"
+            ], 
+            "Resource": "*"
+        }]
     },
     "prd": {
         "project_name": "simple-books-catalog-api",
         "s3_bucket": "prd-simple-book-catalog-sls-deployment-bucket",
-        "app_function": "books_catalog_api.app"
+        "app_function": "books_catalog_api.app",
+        "log_level": "INFO",
+        "aws_environment_variables": {
+            "ENV": "prd",
+            "db_name": "rds_simple_book_catalog",
+            "region": "eu-west-1"
+        },
+        "extra_permissions": [{
+            "Effect": "Allow",
+            "Action": [
+                "rds-data:*",
+                "secretsmanager:GetSecretValue"
+            ], 
+            "Resource": "*"
+        }]
     }
 }

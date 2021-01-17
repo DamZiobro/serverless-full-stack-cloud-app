@@ -43,6 +43,8 @@ requirements: venv serverless
 	$(activate) pip install -r other-requirements.txt #other requirements should not not be included in zip packages
 	$(activate) pip install -r tests/test-requirements.txt #unittest related requirements
 	$(activate) pip install -r load-tests/test-requirements.txt #load tests related requirements
+	@echo "\n\n   PATCH: enable docutils in lambda zip in Zappa to avoid DistributionNotFound error\n\n"
+	patch -p1 < allow_docutils_in_zappa_zip.diff || true
 	touch $@
 
 clean:

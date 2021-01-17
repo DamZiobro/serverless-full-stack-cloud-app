@@ -3,11 +3,18 @@
 # vim:fenc=utf-8
 import logging
 
-from flask import Flask, jsonify
+from flask import Flask
 from flasgger import Swagger, swag_from
+from util import get_sqlalchemy_engine
 
 app = Flask(__name__)
 swagger = Swagger(app)
+
+global DB_ENGINE
+
+#deliberately set as global variable in order to reduce Database connections
+#in lambdas
+DB_ENGINE = get_sqlalchemy_engine()
 
 @app.route('/books/')
 @swag_from("swagger/get_all_books.yml")
