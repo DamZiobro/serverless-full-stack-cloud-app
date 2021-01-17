@@ -1,0 +1,11 @@
+{
+    "dev": {
+        "s3_bucket": "dev-simple-book-catalog-sls-deployment-bucket",
+        "app_function": "books_catalog_api.app"
+    },
+    "task_2_ad": {
+        "project_name": "simple-books-catalog-api",
+        "s3_bucket": "dev-simple-book-catalog-sls-deployment-bucket",
+        "app_function": "books_catalog_api.app"
+    }
+}

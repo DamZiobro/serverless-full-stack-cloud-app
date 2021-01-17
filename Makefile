@@ -7,8 +7,13 @@ APP_DIR=api
 TEST_DIR=tests
 #get name of GIT branchse => remove 'feature/' if exists and limit to max 20 characters
 GIT_BRANCH_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed -E 's/[\/]+/-/g' | sed -E 's/feature-//g' | cut -c 1-9)
-ENV ?= $(GIT_BRANCH_TAG)
+TMP_ENV = $(GIT_BRANCH_TAG)
+ENV ?= $(shell echo $(TMP_ENV) | tr A-Z a-z | tr - _) #lowercase ENV
 AWS_DEFAULT_REGION ?= eu-west-1
+PYTHON_VERSION=python3.7
+activate = VIRTUAL_ENV_DISABLE_PROMPT=true . .venv/bin/activate;
+activate_updir = VIRTUAL_ENV_DISABLE_PROMPT=true . ../.venv/bin/activate;
+PYTHON_EXEC=$(activate) $(PYTHON_VERSION)
 
 #==========================================================================
 # Test and verify quality of the app
@@ -20,53 +25,76 @@ serverless:
 	touch $@
 
 
-requirements: serverless
-	pip install -r requirements.txt
-	pip install -r tests/test-requirements.txt
-	pip install -r load-tests/test-requirements.txt
+ensure-venv:
+ifeq ($(wildcard .venv),)
+	@$(MAKE) -f $(THIS_FILE) venv
+endif
+
+venv:
+	if [ -d .venv ]; then rm -rf .venv; fi
+	$(PYTHON_VERSION) -m venv .venv --clear
+	$(activate) pip3 install --upgrade pip
+	touch $@
+
+requirements: venv serverless
+	$(activate) pip install -r requirements.txt #requirements which should be included into lambdas zip packages
+	$(activate) pip install -r other-requirements.txt #other requirements should not not be included in zip packages
+	$(activate) pip install -r tests/test-requirements.txt #unittest related requirements
+	$(activate) pip install -r load-tests/test-requirements.txt #load tests related requirements
 	touch $@
 
 unittest: requirements
-	python -m unittest discover ${TEST_DIR}
+	$(PYTHON_EXEC) -m unittest discover ${TEST_DIR}
 
 coverage: requirements
-	python -m coverage --version
-	python -m coverage run --source ${APP_DIR} --branch -m unittest discover -v 
-	python -m coverage report -m
-	python -m coverage html
+	$(PYTHON_EXEC) -m coverage --version
+	$(PYTHON_EXEC) -m coverage run --source ${APP_DIR} --branch -m unittest discover -v 
+	$(PYTHON_EXEC) -m coverage report -m
+	$(PYTHON_EXEC) -m coverage html
 
 lint: requirements
-	python -m pylint --version
-	python -m pylint ${APP_DIR}
+	$(PYTHON_EXEC) -m pylint --version
+	$(PYTHON_EXEC) -m pylint ${APP_DIR}
 
 security:
-	python -m bandit --version
-	python -m bandit ${APP_DIR}
+	$(PYTHON_EXEC) -m bandit --version
+	$(PYTHON_EXEC) -m bandit ${APP_DIR}
 
 code-checks: lint security
 
-deploy:
-	@echo "======> Deploying to env $(ENV) <======"
+deploy-api: requirements
+	@echo "======> Deploying Flask-based API resources in env $(ENV) <======"
+	cd $(APP_DIR) && \
+		$(activate_updir) zappa deploy $(ENV) -s zappa_settings.json || \
+		$(activate_updir) zappa update $(ENV) -s zappa_settings.json
 
-deploy-all: deploy requirements
-	@echo "======> Deploying to env $(ENV) <======"
+deploy-db: requirements
+	@echo "======> Deploying RDS Aurora-based AWS resources server $(ENV) <======"
 ifeq ($(FUNC),)
 	sls deploy --stage $(ENV) --verbose --region $(AWS_DEFAULT_REGION)
 else
 	sls deploy --stage $(ENV) -f $(FUNC) --verbose --region $(AWS_DEFAULT_REGION)
 endif
 
-e2e-tests: run-and-logs
+deploy-all: deploy-db deploy-api
+
+e2e-tests: 
+	@echo "e2e-tests - TO BE IMPLEMENTED"
 
 load-tests:
-	ENV=$(ENV) python -m locust -f load-tests/locusttest.py --config load-tests/locust.conf
+	@echo "Starting Locust-based load tests of Flask-based RESTful API"
+	ENV=$(ENV) $(PYTHON_EXEC) -m locust -f load-tests/locusttest.py --config load-tests/locust.conf
 
-destroy:
-	@echo "======> DELETING in env $(ENV) <======"
+destroy-api:
+	@echo "======> DELETING Flask-based API resources in env $(ENV) <======"
+	cd $(APP_DIR) && \
+		$(activate_updir) zappa undeploy --yes $(ENV)
 
-destroy-all: destroy
-	@echo "======> DELETING in env $(ENV) <======"
+destroy-db:
+	@echo "======> DELETING RDS Aurora-based AWS resources server $(ENV) <======"
 	sls remove --stage $(ENV) --verbose --region $(AWS_DEFAULT_REGION)
+
+destroy-all: destroy-api destroy-db #should be recersed order than deploy-all
 
 ci: code-checks unittest coverage
 cd: ci deploy-all e2e-tests load-tests
