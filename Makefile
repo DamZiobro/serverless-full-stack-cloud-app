@@ -6,8 +6,8 @@
 APP_DIR=api
 TEST_DIR=tests
 #get name of GIT branchse => remove 'feature/' if exists and limit to max 20 characters
-GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD | sed -r 's/[\/]+/-/g' | sed -r 's/feature-//g' | cut -c 1-20)
-ENV ?= $(GIT_BRANCH)
+GIT_BRANCH_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed -E 's/[\/]+/-/g' | sed -E 's/feature-//g' | cut -c 1-9)
+ENV ?= $(GIT_BRANCH_TAG)
 AWS_DEFAULT_REGION ?= eu-west-1
 
 #==========================================================================
