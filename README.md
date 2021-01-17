@@ -1,4 +1,4 @@
-Serverless AWS Fargate ECS Task + AWS Lambda 
+Serverless DevOps-based shell app: Vue.js UI + Flask RESTful API + RDS Aurora PostgreSQL database
 ==================
 
 **CI/CD status**:
