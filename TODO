@@ -1,0 +1,3 @@
+- separate one-off deployment resources (RDS, SSM etc.) from frequently changing deployments (api, ui)
+- encrypt password using MKS
+- split Makefile for module-based Makefiles separate for api, db and ui
