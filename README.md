@@ -6,6 +6,7 @@ Mention:
  * git flow for releases 
  * CI/CD
  * OpenAPI-based swagger documentation based on API
+ * config API-based url in vue_instance.js
 
 
 **CI/CD status**:

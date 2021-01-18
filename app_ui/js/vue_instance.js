@@ -4,6 +4,9 @@
  *
  * Distributed under terms of the MIT license.
  */
+let config = {
+  apiBaseUrl: "https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com",
+}
 
 var  vm = new Vue({
    el: '#app',
@@ -23,7 +26,7 @@ var  vm = new Vue({
         addBook:function() {
          axios
           .post(
-              'https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com/dev/books/',
+              config.apiBaseUrl + '/dev/books/',
               {
                   "title": this.newBook.title,
                   "description": this.newBook.description,
@@ -39,7 +42,7 @@ var  vm = new Vue({
    mounted () {
      axios
       .get(
-          'https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com/dev/books/',
+          config.apiBaseUrl + '/dev/books/',
       )
       .then(response => {this.books = response.data})
       .catch(error => {
