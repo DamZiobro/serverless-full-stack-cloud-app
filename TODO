@@ -4,6 +4,7 @@
 - add load-tests
 - add INFRA tests
 - cognito-based authentication
+- update error handling => more meaningful error messages on UI
 - split Makefile for module-based Makefiles separate for api, db and ui
 - add CloudWatch alarms and dashboards to get ERROR logs notifications, API stats etc.
 - add Sphinx-based automatic code docs generator based on docstings
