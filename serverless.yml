@@ -3,6 +3,7 @@ service: simple-book-catalog
 plugins:
   - serverless-python-requirements
   - serverless-plugin-cloudwatch-dashboard
+  - serverless-finch
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -24,6 +25,9 @@ custom:
         - Ref: 'AWS::AccountId'
         - 'cluster'
         - !Ref AuroraDBCluster
+  client:
+      bucketName: ${self:custom.stage}-${self:service.name}-app-ui
+      distributionFolder: app_ui
 
 provider:
   name: aws
