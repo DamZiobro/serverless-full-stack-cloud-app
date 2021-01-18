@@ -8,9 +8,10 @@
 
 import os
 import logging
+from contextlib import contextmanager
 import boto3
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 def get_account_id():
     """
@@ -18,6 +19,8 @@ def get_account_id():
     """
     return boto3.client('sts').get_caller_identity().get('Account')
 
+
+@contextmanager
 def get_sqlalchemy_session():
 
     account_id = get_account_id()
@@ -37,8 +40,11 @@ def get_sqlalchemy_session():
 
     logging.info("Creating new SQLAlchemy session...")
     conn = engine.connect()
-    Session = sessionmaker(bind=engine, expire_on_commit=False)
-    session = Session(bind=conn)
+    session = scoped_session(sessionmaker(bind=engine, expire_on_commit=False))
     logging.info("New SQLAlchemy session created")
 
-    return session
+    yield session
+    logging.info("Closing SQLAlchemy session")
+    session.close()
+    logging.info("Closing SQLAlchemy engine connection")
+    conn.close()
