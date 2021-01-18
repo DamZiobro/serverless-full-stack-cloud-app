@@ -1,0 +1,25 @@
+Get single book from database based on book_id
+---
+produces:
+    - application/json
+definitions:
+  Books:
+    type: array
+    items:
+      $ref: '#/definitions/Book'
+  Book:
+    type: object
+    properties:
+        book_id:
+            type: integer
+        title:
+            type: string
+        description:
+            type: string
+        author_id:
+            type: integer
+responses:
+  200:
+    description: List book based on Book Id
+    schema:
+      $ref: '#/definitions/Books'

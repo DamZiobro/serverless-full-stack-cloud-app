@@ -5,6 +5,7 @@ Mention:
  * separation of concerns: db, api, ui (separation of deployment, tests, code)
  * git flow for releases 
  * CI/CD
+ * OpenAPI-based swagger documentation based on API
 
 
 **CI/CD status**:

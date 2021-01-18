@@ -1,0 +1,23 @@
+Get single author from database based on author_id
+---
+produces:
+    - application/json
+definitions:
+  Authors:
+    type: array
+    items:
+      $ref: '#/definitions/Author'
+  Author:
+    type: object
+    properties:
+        author_id:
+            type: integer
+        first_name:
+            type: string
+        last_name:
+            type: string
+responses:
+  200:
+    description: List author based on Author Id
+    schema:
+      $ref: '#/definitions/Authors'

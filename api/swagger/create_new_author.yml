@@ -1,0 +1,27 @@
+Create new author in the database
+---
+summary: Create author in the database
+
+consumes:
+    - application/json
+produces:
+    - application/json
+parameters:
+  - name: body
+    in: body
+    required: true
+    schema:
+        $ref: '#definitions/Author'
+definitions:
+  Author:
+    type: object
+    properties:
+        first_name:
+            type: string
+        last_name:
+            type: string
+responses:
+  200:
+    description: List author based on Author Id
+    schema:
+      $ref: '#/definitions/Author'

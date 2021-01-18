@@ -1,0 +1,2 @@
+#place pip packages which should not be included in the lambda package
+zappa==0.52.0

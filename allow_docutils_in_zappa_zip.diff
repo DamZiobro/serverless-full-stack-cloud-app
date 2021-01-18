@@ -1,0 +1,11 @@
+--- a/.venv/lib/python3.7/site-packages/zappa/core.py	2021-01-17 17:15:18.420283615 +0000
++++ b/.venv/lib/python3.7/site-packages/zappa/core.py	2021-01-17 17:15:18.420283615 +0000
+@@ -199,7 +199,7 @@
+ # Related: https://github.com/Miserlou/Zappa/pull/581
+ ZIP_EXCLUDES = [
+     '*.exe', '*.DS_Store', '*.Python', '*.git', '.git/*', '*.zip', '*.tar.gz',
+-    '*.hg', 'pip', 'docutils*', 'setuputils*', '__pycache__/*'
++    '*.hg', 'pip', 'setuputils*', '__pycache__/*'
+ ]
+ 
+ # When using ALB as an event source for Lambdas, we need to create an alias

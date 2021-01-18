@@ -1,0 +1,28 @@
+Get all authors from database
+---
+produces:
+    - application/json
+parameters:
+  - name: author_id
+    in: path
+    type: integer
+    required: true
+definitions:
+  Authors:
+    type: array
+    items:
+      $ref: '#/definitions/Author'
+  Author:
+    type: object
+    properties:
+        author_id:
+            type: integer
+        first_name:
+            type: string
+        last_name:
+            type: string
+responses:
+  200:
+    description: List of all authors in the database
+    schema:
+      $ref: '#/definitions/Authors'
