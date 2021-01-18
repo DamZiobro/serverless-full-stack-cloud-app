@@ -6,14 +6,36 @@
  */
 
 var  vm = new Vue({
-   el: '#vue_det',
+   el: '#app',
    data() {
       return {
           books : null,
+          newBook:{
+              title:"",
+              description:"",
+              author_id:0,
+          },
           loading: true,
           errored: false
       }
    },
+    methods: {
+        addBook:function() {
+         axios
+          .post(
+              'https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com/dev/books/',
+              {
+                  "title": this.newBook.title,
+                  "description": this.newBook.description,
+                  "author_id": parseInt(this.newBook.author_id),
+              },
+              { headers: {"Content-Type": "application/json" } }
+          );
+          this.newBook.title = "";
+          this.newBook.description = "";
+          this.newBook.author_id = 0;
+        }
+    },
    mounted () {
      axios
       .get(

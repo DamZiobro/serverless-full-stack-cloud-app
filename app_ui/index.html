@@ -1,40 +1,71 @@
 <html>
-   <head>
-      <title>VueJs Instance</title>
-      <script type = "text/javascript" src = "js/vue.js"></script>
-   </head>
-   <body>
-      <div id="vue_det">
-        <h1>All Books</h1>
+    <head>
+        <title>VueJs Instance</title>
+        <script type = "text/javascript" src = "js/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <h1>Simple Book Catalog</h1>
 
-        <section v-if="errored">
-          <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
-        </section>
+            <section v-if="errored">
+                <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+            </section>
+            <section v-else>
+                <div v-if="loading">Loading...</div>
 
-        <section v-else>
-            <div v-if="loading">Loading...</div>
+                <div
+                    v-else
+                    v-for="book in books"
+                    class="book"
+                    >
 
-            <div
-                v-else
-                v-for="book in books"
-                class="book"
-                >
-
-                <div class="title">
-                    {{ book.title }}
+                    <div class="title">
+                        {{ book.title }}
+                    </div>
+                    <div class="description">
+                        {{ book.description }}:
+                    </div>
+                    <div class="author_div">
+                        by <div class="author">{{ book.author.first_name }} {{book.author.last_name}}</div>
+                    </div>
                 </div>
-                <div class="description">
-                    {{ book.description }}:
-                </div>
-                <div class="author_div">
-                    by <div class="author">{{ book.author.first_name }} {{book.author.last_name}}</div>
-                </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>Add Book</h3>
+              </div>
+              <div class="panel-body">
+                <form id="form" class="form-inline" v-on:submit.prevent="addBook">
+                  <div class="form-group">
+                    <label for="bookTitle">Title:</label>
+                    <input type="text" id="bookTitle" class="form-control" v-model="newBook.title"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookUrl">Description:</label>
+                    <input type="text" id="bookDescription" class="form-control" v-model="newBook.description"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookAuthorId">author_id:</label>
+                    <input type="text" id="bookAuthorId" class="form-control" v-model="newBook.author_id"/>
+                  </div>
+                  <input type="submit" class="btn btn-primary" value="Add Book">
+                </form>
+              </div>
             </div>
-        </section>
-      </div>
-      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-      <script type = "text/javascript" src = "js/vue_instance.js"></script>
+            </section>
+        </div>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type = "text/javascript" src = "js/vue_instance.js"></script>
 
-   </body>
+        <style>
+            #app {
+                font-family: 'Avenir', Helvetica, Arial, sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                color: #2c3e50;
+                margin-top: 60px;
+            }
+        </style>
+
+    </body>
 </html>
 

@@ -3,7 +3,7 @@
 - add e2e-tests
 - add load-tests
 - add INFRA tests
-- separate one-off deployment resources (RDS, SSM etc.) from frequently changing deployments (api, ui)
+- cognito-based authentication
 - split Makefile for module-based Makefiles separate for api, db and ui
 - add CloudWatch alarms and dashboards to get ERROR logs notifications, API stats etc.
 - add Sphinx-based automatic code docs generator based on docstings
