@@ -58,7 +58,7 @@ var  vm = new Vue({
               },
               { headers: {"Content-Type": "application/json" } }
           )
-          .then(response => {this.books += response.data; console.log(response.data)})
+          .then(response => {this.books.push(response.data)})
           .catch(error => {
             console.log(error)
             this.errored_post = true
@@ -80,7 +80,7 @@ var  vm = new Vue({
               },
               { headers: {"Content-Type": "application/json" } }
           )
-          .then(response => {this.authors += response.data})
+          .then(response => {this.authors.push(response.data)})
           .catch(error => {
             console.log(error)
             this.errored_post = true
