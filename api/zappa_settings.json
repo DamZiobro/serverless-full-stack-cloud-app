@@ -4,6 +4,7 @@
         "s3_bucket": "dev-simple-book-catalog-sls-deployment-bucket",
         "app_function": "books_catalog_api.app",
         "log_level": "INFO",
+        "cors":true,
         "aws_environment_variables": {
             "ENV": "dev",
             "db_name": "rds_simple_book_catalog",

@@ -1,11 +1,40 @@
-<!DOCTYPE html>
 <html>
-	<head>
-        <meta charset="utf-8" />
-		<title>Hello world</title>
-	</head>
-	<body>
-	    <h1>Hello World</h1>	
-	</body>
+   <head>
+      <title>VueJs Instance</title>
+      <script type = "text/javascript" src = "js/vue.js"></script>
+   </head>
+   <body>
+      <div id="vue_det">
+        <h1>All Books</h1>
+
+        <section v-if="errored">
+          <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+        </section>
+
+        <section v-else>
+            <div v-if="loading">Loading...</div>
+
+            <div
+                v-else
+                v-for="book in books"
+                class="book"
+                >
+
+                <div class="title">
+                    {{ book.title }}
+                </div>
+                <div class="description">
+                    {{ book.description }}:
+                </div>
+                <div class="author_div">
+                    by <div class="author">{{ book.author.first_name }} {{book.author.last_name}}</div>
+                </div>
+            </div>
+        </section>
+      </div>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script type = "text/javascript" src = "js/vue_instance.js"></script>
+
+   </body>
 </html>
 

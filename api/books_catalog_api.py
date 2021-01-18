@@ -7,9 +7,15 @@ from flask import Flask, request, jsonify
 from flasgger import Swagger, swag_from
 from util import get_sqlalchemy_session
 from models import Author, Book
+from flask_cors import CORS
 
 app = Flask(__name__)
 swagger = Swagger(app)
+
+#enable CORS for all routes in order to be possible to request from different origins in UI
+#In PROD we should have the same origin for both API and UI to avoid enabling CORS
+#it will add header Access-Control-Allow-Origin: * to each HTTP response
+CORS(app)
 
 #deliberately set as global variable in order to reduce Database connections
 #in lambdas
@@ -23,7 +29,6 @@ def get_all_books():
     Return all books from database
     """
     query = SESSION.query(Book).order_by("title")
-    logging.info(f"GET book: {book}")
     books = []
     for book in query:
         books.append({

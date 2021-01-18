@@ -4,3 +4,4 @@ sqlalchemy-aurora-data-api==0.2.0
 flask==1.1.2
 flasgger==0.9.5
 docutils==0.15.2
+flask-cors==3.0.10
