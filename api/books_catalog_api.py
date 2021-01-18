@@ -5,9 +5,9 @@ import logging
 
 from flask import Flask, request, jsonify
 from flasgger import Swagger, swag_from
-from util import get_sqlalchemy_session
-from models import Author, Book
 from flask_cors import CORS
+from .util import get_sqlalchemy_session
+from .models import Author, Book
 
 app = Flask(__name__)
 swagger = Swagger(app)
