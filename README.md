@@ -215,6 +215,13 @@ make deploy run
 
 **The default stage for the app is equal to current branch name ex. master**. 
 
+Releases
+--------
+
+Releases and creating new version of software are based on [**git flow**](https://datasift.github.io/gitflow/IntroducingGitFlow.html) principles.
+On the release branche we create tags ex. `sit-v1.0.0` (for UAT (SIT) tests) and
+`prd-v1.0.0` for release to PROD.
+
 
 More details
 --------
