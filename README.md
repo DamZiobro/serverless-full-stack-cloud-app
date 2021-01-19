@@ -223,11 +223,10 @@ This simple project is demonstration of multiple modern technologies/methodologi
   * **Python** programming language
   * cloud-based app deployed to **Amazon Web Services (AWS)**: VPC, Secrets Manager, RDS, AWS Lambda, API Gateway, S3 Static Website Hosting, CloudWatch etc.
   * **Serverless** (Serverless Framework) - AWS Lambda, AWS Fargate, ECS
-  * **Microservices** architecture (single resposiblity AWS Lambdas communicating via AWS SQS)
-  * **Infrastracture as a Code** (IaaC) (Serverless framework - [serverless.yml](serverless.yml) defines infrastructure resources)
+  * **Infrastracture as a Code** (IaaC) (Serverless framework - [serverless.yml](serverless.yml) + Zappa framework for Flask-based API ([api/zappa_settings.json](api/zappa_settings.json))
   * **DevOps**-based workflow (common code base with Makefile commands spanning Developers and Operations Teams together)
   * **RESTful API** - simple implementation of REST API based on Python
-  * Fully automated **CI/CD pipeline** based on GitHub Actions CI/CD Server
+  * Fully automated **CI/CD pipeline** based on GitHub Actions CI/CD Server (**TODO: started implementation, but still should be finished**)
     * code syntax verification (pylint) (`make lint`)
     * security verification (bandit) (`make security`)
     * unit tests (unittest) (`make unittest`)
@@ -242,8 +241,6 @@ This simple project is demonstration of multiple modern technologies/methodologi
     * available to deploy single lambda function (ex. `make deploy FUNC=lambdaFunctionName`)
   * **Monitoring**
     * basic monitoring based on **CloudWatch Dashboards**
-
-This framework is based on [a Serverless Application Framework](https://www.serverless.com/)
 
 Tests
 ----
