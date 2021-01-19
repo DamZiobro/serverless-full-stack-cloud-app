@@ -34,9 +34,9 @@ Live Demo
 
 [**Website UI URL**](http://dev-simple-book-catalog-app-ui.s3-website-eu-west-1.amazonaws.com/)
 
-[OpenAPI-based API documentation](https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com/dev/apidocs/#/)
+[OpenAPI-based API documentation](https://humkpy96uj.execute-api.eu-west-1.amazonaws.com/dev/apidocs/#/)
 
-[RESTful API URL](https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com/dev/books/)
+[RESTful API URL](https://humkpy96uj.execute-api.eu-west-1.amazonaws.com/dev/books/)
 
 
 Database tier

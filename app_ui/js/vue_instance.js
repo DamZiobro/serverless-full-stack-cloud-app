@@ -5,7 +5,7 @@
  * Distributed under terms of the MIT license.
  */
 let config = {
-  apiBaseUrl: "https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com/dev",
+  apiBaseUrl: "https://humkpy96uj.execute-api.eu-west-1.amazonaws.com/dev",
 }
 
 var removeByAttr = function(arr, attr, value){
