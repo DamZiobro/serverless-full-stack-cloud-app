@@ -16,7 +16,7 @@ class Author(Base):
     first_name: str
     last_name: str
 
-    author_id = Column(Integer, primary_key=True)
+    author_id = Column(Integer, primary_key=True, autoincrement=True)
     first_name = Column(String)
     last_name = Column(String)
 
@@ -27,7 +27,7 @@ class Author(Base):
 class Book(Base):
     __tablename__ = "book"
 
-    book_id = Column(Integer, primary_key=True)
+    book_id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
     description = Column(String)
     author_id = Column(Integer, ForeignKey("author.author_id"))

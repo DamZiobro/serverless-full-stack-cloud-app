@@ -14,7 +14,7 @@ AWS_DEFAULT_REGION ?= eu-west-1
 PYTHON_VERSION=python3.7
 activate = VIRTUAL_ENV_DISABLE_PROMPT=true . .venv/bin/activate;
 activate_updir = VIRTUAL_ENV_DISABLE_PROMPT=true . ../.venv/bin/activate;
-PYTHON_EXEC=$(activate) $(PYTHON_VERSION)
+PYTHON_EXEC=$(activate) PYTHONPATH=$(PYTHONPATH):$(PWD)/$(APP_DIR) $(PYTHON_VERSION)
 
 #==========================================================================
 # Test and verify quality of the app
@@ -23,6 +23,7 @@ serverless:
 	npm install -g serverless@1.51.0 || true
 	sls plugin install -n serverless-plugin-cloudwatch-dashboard
 	sls plugin install -n serverless-python-requirements
+	sls plugin install -n serverless-finch
 	touch $@
 
 
@@ -83,7 +84,10 @@ else
 	sls deploy --stage $(ENV) -f $(FUNC) --verbose --region $(AWS_DEFAULT_REGION)
 endif
 
-deploy-all: deploy-db deploy-api
+deploy-ui: requirements
+	sls client deploy --stage $(ENV) --verbose --region $(AWS_DEFAULT_REGION) --no-confirm
+
+deploy-all: deploy-db deploy-api deploy-ui
 
 e2e-tests: 
 	@echo "e2e-tests - TO BE IMPLEMENTED"
@@ -92,16 +96,19 @@ load-tests:
 	@echo "Starting Locust-based load tests of Flask-based RESTful API"
 	ENV=$(ENV) $(PYTHON_EXEC) -m locust -f load-tests/locusttest.py --config load-tests/locust.conf
 
-destroy-api:
+destroy-api: requirements
 	@echo "======> DELETING Flask-based API resources in env $(ENV) <======"
 	cd $(APP_DIR) && \
 		$(activate_updir) zappa undeploy --yes $(ENV)
 
-destroy-db:
+destroy-db: requirements
 	@echo "======> DELETING RDS Aurora-based AWS resources server $(ENV) <======"
 	sls remove --stage $(ENV) --verbose --region $(AWS_DEFAULT_REGION)
 
-destroy-all: destroy-api destroy-db #should be recersed order than deploy-all
+destroy-ui: requirements
+	sls client remove --stage $(ENV) --verbose --region $(AWS_DEFAULT_REGION) --no-confirm
+
+destroy-all: destroy-ui destroy-api destroy-db #should be recersed order than deploy-all
 
 ci: code-checks unittest coverage
 cd: ci deploy-all e2e-tests load-tests

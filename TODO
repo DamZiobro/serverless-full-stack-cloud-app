@@ -1,9 +1,11 @@
 - update README file
-- add unit tests
+- make CI/CD pipeline with GitHub Actions working
+- add more unit tests
 - add e2e-tests
 - add load-tests
 - add INFRA tests
-- separate one-off deployment resources (RDS, SSM etc.) from frequently changing deployments (api, ui)
+- cognito-based authentication
+- update error handling => more meaningful error messages on UI
 - split Makefile for module-based Makefiles separate for api, db and ui
 - add CloudWatch alarms and dashboards to get ERROR logs notifications, API stats etc.
 - add Sphinx-based automatic code docs generator based on docstings

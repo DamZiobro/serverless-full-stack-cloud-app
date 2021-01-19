@@ -1,20 +1,22 @@
 Serverless DevOps-based shell app: Vue.js UI + Flask RESTful API + RDS Aurora PostgreSQL database
 ==================
 
-Mention:
- * separation of concerns: db, api, ui (separation of deployment, tests, code)
- * git flow for releases 
- * CI/CD
- * OpenAPI-based swagger documentation based on API
+This is the skeleton skeleton app containing implementation and deployment of
+Full Stack application for creating and storing books. 
+
+The application consists of 3 tiers:
+* **database tier** - PostgreSQL database deployed to AWS as RDS Aurora
+  Serverless service using Serverless Framework
+* **RESTful API tier** - implemented using Flask and deployed using Zappa into
+  API Gateway and AWS Lambda. It communicates with database using SQLAlchemy
+* **Vue.js User Interface** - simple user interface implemented using Vue.js
+  framework and deployed to AWS S3 as Static Hosting Website using Serverles 
+Framework's plugin serverless-finch
 
 
-**CI/CD status**:
-![](https://github.com/DamZiobro/serverless-aws-rest-api/workflows/CI/badge.svg)
-
-This is the skeleton app for deploying ECS Tasks for AWS Fargate + AWS Lambda
-function to process them. 
-
-This app deploys ECS Task with SQL database based on public docker image `nouchka/sqlite3`
+Database tier
+--------
+Database: RDS Post
 
 Additionally, this simple project is demonstration of multiple modern technologies/methodologies/principles:
 

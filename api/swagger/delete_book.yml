@@ -1,0 +1,11 @@
+Delete single book from database based on book_id
+---
+produces:
+    - application/json
+responses:
+  200:
+    description: book_id of deleted book
+    schema:
+        properties:
+        book_id:
+            type: integer

@@ -1,0 +1,174 @@
+<html>
+    <head>
+        <title>VueJs Instance</title>
+        <script type = "text/javascript" src = "js/vue.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div id="app">
+            <h1>Simple Book Catalog</h1>
+
+            <section v-if="errored_delete">
+                <p class="error-box">We're sorry, we're not able to DELETE this item at the moment, please try back later</p>
+            </section>
+            <section v-if="errored_post">
+                <p class="error-box">We're sorry, we're not able to CREATE this item at the moment, please try back later</p>
+            </section>
+            <section v-if="errored_get">
+                <p class="error-box">We're sorry, we're not able to GET items at the moment, please try back later</p>
+            </section>
+            <section v-else>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>List of books</h3>
+              </div>
+                <div class="div-table">
+                    <div class="div-table-row">
+                        <div class="div-table-col div-table-col-header">Title</div>
+                        <div class="div-table-col div-table-col-header">Description</div>
+                        <div class="div-table-col div-table-col-header">Author</div>
+                        <div class="div-table-col div-table-col-short div-table-col-header">x</div>
+                    </div>
+                    <div v-if="loading">Loading...</div>
+                    <div
+                        v-else
+                        v-for="book in books"
+                        class="div-table-row"
+                        >
+                        <div class="div-table-col">
+                            {{ book.title }}
+                        </div>
+                        <div class="div-table-col">
+                            {{ book.description }}
+                        </div>
+                        <div class="div-table-col">
+                            <div class="author">{{ book.author.first_name }} {{book.author.last_name}}</div>
+                        </div>
+                        <div class="div-table-col div-table-col-short">
+                            <button class="btn" v-on:click="removeBook(book)"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>List of authors</h3>
+              </div>
+                <div class="div-table">
+                    <div class="div-table-row">
+                        <div class="div-table-col div-table-col-header">First name</div>
+                        <div class="div-table-col div-table-col-header">Last name</div>
+                    </div>
+                    <div v-if="loading">Loading...</div>
+                    <div
+                        v-else
+                        v-for="author in authors"
+                        class="div-table-row"
+                        >
+                        <div class="div-table-col">
+                            {{ author.first_name }}
+                        </div>
+                        <div class="div-table-col">
+                            {{ author.last_name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>Add Author</h3>
+              </div>
+              <div class="panel-body">
+                <form id="form" class="form-inline" v-on:submit.prevent="addAuthor">
+                  <div class="form-group">
+                    <label for="authorFirstName">First name:</label>
+                    <input type="text" id="authorFirstName" class="form-control" v-model="newAuthor.first_name"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="authorLastName">Last name:</label>
+                    <input type="text" id="authorLastName" class="form-control" v-model="newAuthor.last_name"/>
+                  </div>
+                  <input type="submit" class="btn btn-primary" value="Add Author">
+                </form>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>Add Book</h3>
+              </div>
+              <div class="panel-body">
+                <form id="form" class="form-inline" v-on:submit.prevent="addBook">
+                  <div class="form-group">
+                    <label for="bookTitle">Title:</label>
+                    <input type="text" id="bookTitle" class="form-control" v-model="newBook.title"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookDescription">Description:</label>
+                    <input type="text" id="bookDescription" class="form-control" v-model="newBook.description"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookAuthor">Author:</label>
+                    <select 
+                        v-model="newBook.author_id"
+                    >
+                      <option v-for="author in authors" v-bind:value="author.author_id">
+                          {{author.first_name}} {{author.last_name}}
+                      </option>
+                    </select>
+                  </div>
+                  <input type="submit" class="btn btn-primary" value="Add Book">
+                </form>
+              </div>
+            </div>
+            </section>
+        </div>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type = "text/javascript" src = "js/vue_instance.js"></script>
+
+        <style>
+            #app {
+                font-family: 'Avenir', Helvetica, Arial, sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                color: #2c3e50;
+                margin-top: 60px;
+            }
+            .div-table {
+              display: table;         
+              width: auto;         
+              background-color: #eee;         
+              border: 1px solid #666666;         
+              border-spacing: 5px; /* cellspacing:poor IE support for  this */
+            }
+            .div-table-row {
+              display: table-row;
+              width: auto;
+              clear: both;
+            }
+            .div-table-col {
+              float: left; /* fix for  buggy browsers */
+              display: table-column;         
+              width: 350px;         
+              background-color: #ccc;  
+            }
+            .div-table-col-short {
+              width: 30px;         
+            }
+            .div-table-col-header {
+              text-align: center;
+              background-color: #aaa;  
+              font-weight: bold;
+            }
+            .div-table-col-header {
+              text-align: center;
+              background-color: #aaa;  
+              font-weight: bold;
+            }
+            .error-box {
+                border: 5px solid red;
+            }
+        </style>
+
+    </body>
+</html>
+
