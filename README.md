@@ -134,6 +134,9 @@ Just [set up AWS credentials](https://docs.aws.amazon.com/sdk-for-java/v1/develo
 for demo purposes and is not great Vue.js application. It should be improved by
 implementing using Vue Components, Vue Router etc. See [TODO](#TODO) section.
 
+After UI deployment we can see it here:
+![](docs/ui.png)
+
 Makefile
 --------
 **Makefile** is used in order to simplify most common development, debugging,
