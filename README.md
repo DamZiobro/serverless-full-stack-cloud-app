@@ -5,6 +5,8 @@ This is the skeleton skeleton app containing implementation and deployment of
 Full Stack application with 3 tires: UI + API + Database deployed into **AWS** using Infrastructure 
 as a Code (IaaC) scripts and frameworks.
 
+![](docs/full-stack.png)
+
 Summary
 --------
 _The application consists of 3 tiers_ separated and in 3 directories which could
