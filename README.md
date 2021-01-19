@@ -21,8 +21,8 @@ be deployed and developed separately:
 
   RESTful API IaaC resources and code are placed in [api](api) directory
 
-* **Vue.js User Interface** - simple user interface implemented using [**Vue.js**](https://vuejs.org/)
-  framework and deployed to [**AWS S3 as Static Hosting Website**](https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html) using Serverless 
+* **Vue.js User Interface** - simple user interface implemented using [**Vue.js**](https://vuejs.org/) framework **HTML**, **CSS** and **JavaScript**
+  and deployed to [**AWS S3 as Static Hosting Website**](https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html) using Serverless 
 Framework's plugin [**serverless-finch**](https://www.npmjs.com/package/serverless-finch)
 
   Vue.js User Interface IaaC resources and code are placed in [app_ui](app_ui) directory
@@ -39,8 +39,11 @@ Live Demo
 Database tier
 --------
 **Database**: [RDS PostgreSQL Aurora Serverless](https://aws.amazon.com/rds/aurora/serverless/). Related deployment resources are placed here:[AuroraRDSServerless.yml](db/resources/rds/AuroraRDSServerless.yml) 
+
 **Credentials**: Credentials are deployed to [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/). Related deployment resources are placed here:[AuroraRDSServerless.yml](db/resources/rds/AuroraRDSServerless.yml)
+
 **VPC**: RDS database is deployed into AWS VPC. Related deployment resources are placed in [db/resources/vpc](db/resources/vpc)
+
 **Deployment**: 
 ALL the resources required to deploy database and make it up and running (including RDS Cluster, Security Grups, IAM roles, Secrets Manager, VPC, subnets etc.) are implemented using
 **Infrastructure as a Code (IaaC)** principles in file [serverless.yml](serverless.yml) and folder [db/resources](db/resources)
@@ -51,7 +54,8 @@ whether detabase and table was already created and create them if don't exist.
 It is defined in [db/code/db.py](db/code/db.py) and creates tables defined in
 the SQLAlchemy models in [db/code/models.py](db/code/models.py)
 
-There is **one command deployment of database tier** without additional configuration. Just [set up AWS credentials](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html) and run this command:
+There is **one command deployment of database tier** without additional configuration. 
+Just [set up AWS credentials](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html) and run this command:
 `make deploy-db` 
 
 
@@ -64,27 +68,35 @@ Also we can see that database credentials were generated and deployed to AWS
 Secrets Manager:
 ![](docs/aws_secret.png)
 
+
 RESTful API tier
 --------
 **Code**: The RESTful API was implemented using [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework and process database operations using [**SQLAlchemy**](https://www.sqlalchemy.org/) framework.
 Endpoints of RESTful API are defined in [api/books_catalog_api.py](api/books_catalog_api.py) file.
+
 **Docs**: Documentation for the RESTful API has been created using OpenAPI
 specification and generated using [**flask-swagger**](https://pypi.org/project/flask-swagger/) plugin.
+
 **Tests**: 
 * **Unit tests** - unit tests are defined in [tests/test_api.py](tests/test_api.py). TODO: update coverage to 100%
 * **E2E-Tests** - **TODO** - should be implemented and placed in e2e-tests directory.
 * **load-tests** - [locust](https://locust.io/)-based simple scripts have been
-  implemented for load testing RESTful API in [load-tests](load-tests) directory. **TODO**: update script and make it working
+ implemented for load testing RESTful API in [load-tests](load-tests) directory. **TODO**: update script and make it working
+
 **Deployment**:
-* RESTful API is being deployed into serverless AWS resource: **API Gateway** and
-**AWS Lambda**. 
+*  RESTful API is being deployed into serverless AWS resource: **API Gateway** and **AWS Lambda**. 
 * Deployment scripts is implemented using [**Zappa**](https://github.com/Miserlou/Zappa) tool. Settings of deployment are implemented in [api/zappa_settings.json](api/zappa_settings.json) file.
+
 **CORS**:
 Please notice that in [api/books_catalog_api.py] CORS is enabled for any origin using
 [**flask-cors**](https://flask-cors.readthedocs.io/en/latest/) plugin. It was
 enabled here as API origin is different than UI app origin. In real-world PROD
 solutions CORS should be disabled and instead the same origin/domain could be assigned
 for bot API (backend) and UI app (frontend) using **AWS Route53**. See **[TODO](#TODO) section**.
+
+There is **one command deployment of RESTful API tier** without additional configuration. 
+Just [set up AWS credentials](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html) and run this command:
+`make deploy-api` 
 
 When deployed we can see API Gateway in AWS Console:
 ![](docs/api_gateway.png)
@@ -98,6 +110,29 @@ lambda every 4 mins to keep it warm**
 
 Vue.js User Interface tier
 --------
+**Code**: Simple UI application was implemented using [vue.js](https://vuejs.org/) framework 
+and it consumes API using [axios](https://www.npmjs.com/package/axios) library. 
+Code is placed in [api_ui](api_ui) directory with:
+* HTML template: [app_ui/index.html](app_ui/index.html)
+* CSS styles: [app_ui/css/vue_instance.css](app_ui/css/vue_instance.css)
+* **Vue.js JavaScript app**: [app_ui/js/vue_instance.js](app_ui/js/vue_instance.js)
+
+**Deployment**: Vue.js UI is deployed into **AWS S3** as Static Hosting Website
+using **Serverless Framework's plugin [serverless-finch](https://www.npmjs.com/package/serverless-finch)**. 
+It just requires those 3 lines in [serverless.yml](serverless.yml) file:
+```
+  client:
+      bucketName: ${self:custom.stage}-${self:service.name}-app-ui
+      distributionFolder: app_ui
+```
+
+There is **one command deployment of RESTful API tier** without additional configuration. 
+Just [set up AWS credentials](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html) and run this command:
+`make deploy-ui` 
+
+**TODO**: current UI implementation is not best clean code. Was implemented quickly
+for demo purposes and is not great Vue.js application. It should be improved by
+implementing using Vue Components, Vue Router etc. See [TODO](#TODO) section.
 
 Makefile
 --------

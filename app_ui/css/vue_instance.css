@@ -1,0 +1,50 @@
+/*
+ * vue_instance.css
+ * Copyright (C) 2021 damian
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    margin-top: 60px;
+}
+.div-table {
+  display: table;         
+  width: auto;         
+  background-color: #eee;         
+  border: 1px solid #666666;         
+  border-spacing: 5px; /* cellspacing:poor IE support for  this */
+}
+.div-table-row {
+  display: table-row;
+  width: auto;
+  clear: both;
+}
+.div-table-col {
+  float: left; /* fix for  buggy browsers */
+  display: table-column;         
+  width: 350px;         
+  background-color: #ccc;  
+}
+.div-table-col-short {
+  width: 30px;         
+}
+.div-table-col-header {
+  text-align: center;
+  background-color: #aaa;  
+  font-weight: bold;
+}
+.div-table-col-header {
+  text-align: center;
+  background-color: #aaa;  
+  font-weight: bold;
+}
+.error-box {
+    border: 5px solid red;
+}
+
+
