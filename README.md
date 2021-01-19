@@ -242,6 +242,15 @@ git checkout main && git push
 git push --tags
 ```
 
+Log analysis
+--------
+After deployment when we use the UI and/or API and we see some errors we can
+debug it using log analysis in **AWS CloudWatch**. The log group related to
+API's Lambda function are placed in Log Group: `/aws/lambda/simple-books-catalog-api-dev`
+
+We can see them in CloudWatch in AWS Console:
+![](docs/cloud_watch_logs.png)
+
 
 More details
 --------
