@@ -1,5 +1,6 @@
 - update README file
-- add unit tests
+- make CI/CD pipeline with GitHub Actions working
+- add more unit tests
 - add e2e-tests
 - add load-tests
 - add INFRA tests

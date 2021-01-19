@@ -14,7 +14,7 @@ AWS_DEFAULT_REGION ?= eu-west-1
 PYTHON_VERSION=python3.7
 activate = VIRTUAL_ENV_DISABLE_PROMPT=true . .venv/bin/activate;
 activate_updir = VIRTUAL_ENV_DISABLE_PROMPT=true . ../.venv/bin/activate;
-PYTHON_EXEC=$(activate) $(PYTHON_VERSION)
+PYTHON_EXEC=$(activate) PYTHONPATH=$(PYTHONPATH):$(PWD)/$(APP_DIR) $(PYTHON_VERSION)
 
 #==========================================================================
 # Test and verify quality of the app

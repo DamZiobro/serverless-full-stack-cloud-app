@@ -6,8 +6,8 @@ import logging
 from flask import Flask, request, jsonify
 from flasgger import Swagger, swag_from
 from flask_cors import CORS
-from .util import get_sqlalchemy_session
-from .models import Author, Book
+from util import get_sqlalchemy_session
+from models import Author, Book
 
 app = Flask(__name__)
 swagger = Swagger(app)
@@ -16,7 +16,6 @@ swagger = Swagger(app)
 #In PROD we should have the same origin for both API and UI to avoid enabling CORS
 #it will add header Access-Control-Allow-Origin: * to each HTTP response
 CORS(app)
-
 
 @app.route('/books/')
 @swag_from("swagger/get_all_books.yml")
@@ -175,6 +174,12 @@ def get_author(author_id):
             "first_name": author.first_name,
             "last_name": author.last_name,
         })
+
+@app.route('/')
+def route():
+    with get_sqlalchemy_session() as db:
+        logging.info("Keeping db connection open...")
+    return {}
 
 # We only need this for local development.
 if __name__ == '__main__':

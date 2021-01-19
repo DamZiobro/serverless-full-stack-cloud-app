@@ -31,8 +31,14 @@ class BooksCatalogAPITests(LiveServerTestCase):
         self.db = scoped_session(sessionmaker(bind=engine, expire_on_commit=False))
         create_tables(engine)
 
-    def test_no_root_path(self):
+    @patch("api.books_catalog_api.get_sqlalchemy_session")
+    def test_root_path(self, mock_db):
+        mock_db.__enter__.return_value = self.db
         response = app.test_client().get("/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_non_existing_path(self):
+        response = app.test_client().get("/non-existing")
         self.assertEqual(response.status_code, 404)
 
     @patch("api.books_catalog_api.get_sqlalchemy_session")
