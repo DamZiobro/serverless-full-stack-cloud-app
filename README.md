@@ -1,9 +1,12 @@
-Serverless DevOps-based shell app: Vue.js UI + Flask RESTful API + RDS Aurora PostgreSQL database
+Shell app with Vue.js UI + Flask RESTful API + RDS Aurora PostgreSQL and IaaC-based deployment
 ==================
 
 This is the skeleton skeleton app containing implementation and deployment of
-Full Stack application for creating and storing books. 
+Full Stack application with 3 tires: UI + API + Database deployed using Infrastructure 
+as a Code (IaaC) scripts and frameworks.
 
+Summary
+--------
 _The application consists of 3 tiers_ separated and in 3 directories which could
 be deployed and developed separately:
 * **database tier** - **PostgreSQL** database deployed to AWS as RDS Aurora
@@ -27,11 +30,10 @@ Framework's plugin [**serverless-finch**](https://www.npmjs.com/package/serverle
 Live Demo
 --------
 
-OpenAPI-based API documentation:
-RESTful API URL:
+[**Website UI URL**](http://dev-simple-book-catalog-app-ui.s3-website-eu-west-1.amazonaws.com/)
 
-Website UI URL: 
-
+[OpenAPI-based API documentation](https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com/dev/apidocs/#/)
+[RESTful API URL](https://xeyvfe7639.execute-api.eu-west-1.amazonaws.com/dev/apidocs/#/)
 
 
 Database tier
@@ -43,17 +45,69 @@ Database tier
 ALL the resources required to deploy database and make it up and running (including RDS Cluster, Security Grups, IAM roles, Secrets Manager, VPC, subnets etc.) are implemented using
 **Infrastructure as a Code (IaaC)** principles in file [serverless.yml](serverless.yml) and folder [db/resources](db/resources)
 
+Additionally there is helper AWS lambda function deployed for automatic database schema
+migration (creating database and tables after deployment). It is able to detect
+whether detabase and table was already created and create them if don't exist.
+It is defined in [db/code/db.py](db/code/db.py) and creates tables defined in
+the SQLAlchemy models in [db/code/models.py](db/code/models.py)
+
 There is **one command deployment of database tier** without additional configuration. Just [set up AWS credentials](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html) and run this command:
 `make deploy-db` 
 
 
+When deployed we can see that database is up and running in AWS Console in RDS
+section:
+![](docs/rds_aurora.png)
+
+
+Also we can see that database credentials were generated and deployed to AWS
+Secrets Manager:
+![](docs/aws_secret.png)
+
+RESTful API tier
+--------
+**Code**: The RESTful API was implemented using [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework and process database operations using [**SQLAlchemy**](https://www.sqlalchemy.org/) framework.
+Endpoints of RESTful API are defined in [api/books_catalog_api.py](api/books_catalog_api.py) file.
+**Docs**: Documentation for the RESTful API has been created using OpenAPI
+specification and generated using [**flask-swagger**](https://pypi.org/project/flask-swagger/) plugin.
+**Tests**: 
+* **Unit tests** - unit tests are defined in [tests/test_api.py](tests/test_api.py). TODO: update coverage to 100%
+* **E2E-Tests** - **TODO** - should be implemented and placed in e2e-tests directory.
+* **load-tests** - [locust](https://locust.io/)-based simple scripts have been
+  implemented for load testing RESTful API in [load-tests](load-tests) directory. **TODO**: update script and make it working
+**Deployment**:
+* RESTful API is being deployed into serverless AWS resource: **API Gateway** and
+**AWS Lambda**. 
+* Deployment scripts is implemented using [**Zappa**](https://github.com/Miserlou/Zappa) tool. Settings of deployment are implemented in [api/zappa_settings.json](api/zappa_settings.json) file.
+**CORS**:
+Please notice that in [api/books_catalog_api.py] CORS is enabled for any origin using
+[**flask-cors**](https://flask-cors.readthedocs.io/en/latest/) plugin. It was
+enabled here as API origin is different than UI app origin. In real-world PROD
+solutions CORS should be disabled and instead the same origin/domain could be assigned
+for bot API (backend) and UI app (frontend) using **AWS Route53**. See **[TODO](#TODO) section**.
+
+When deployed we can see API Gateway in AWS Console:
+![](docs/api_gateway.png)
+
+Also we can see API related AWS Lambda function in AWS Console:
+![](docs/aws_lambda.png)
+As you can see lambda has **CloudWatch-Events-based trigger** assigned. **It triggers
+lambda every 4 mins to keep it warm**
 
 
 
-Additionally, this simple project is demonstration of multiple modern technologies/methodologies/principles:
+Vue.js User Interface tier
+--------
+
+Makefile
+--------
+
+More details
+--------
+This simple project is demonstration of multiple modern technologies/methodologies/principles:
 
   * **Python** programming language
-  * cloud-based app deployed to **Amazon Web Services (AWS)**
+  * cloud-based app deployed to **Amazon Web Services (AWS)**: VPC, Secrets Manager, RDS, AWS Lambda, API Gateway, S3 Static Website Hosting, CloudWatch etc.
   * **Serverless** (Serverless Framework) - AWS Lambda, AWS Fargate, ECS
   * **Microservices** architecture (single resposiblity AWS Lambdas communicating via AWS SQS)
   * **Infrastracture as a Code** (IaaC) (Serverless framework - [serverless.yml](serverless.yml) defines infrastructure resources)
@@ -237,12 +291,15 @@ Lambda monitoring as on the picture:
 
 TODO
 ---------
+- add Route53-based constant domain to the API and Website URLs
+- implement Vue.js app better => including Vue Components, Vue Router etc.
+- Authentication: AWS Cognito-based authentication on website + RESTful API
+  authentication 
 - make CI/CD pipeline with GitHub Actions working
 - add more unit tests
 - add e2e-tests
 - add load-tests
 - add INFRA tests
-- AWS Cognito-based authentication
 - update error handling => more meaningful error messages on UI
 - split Makefile for module-based Makefiles separate for api, db and ui
 - add CloudWatch alarms and dashboards to get ERROR logs notifications, API stats etc.
