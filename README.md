@@ -222,6 +222,26 @@ Releases and creating new version of software are based on [**git flow**](https:
 On the release branche we create tags ex. `sit-v1.0.0` (for UAT (SIT) tests) and
 `prd-v1.0.0` for release to PROD.
 
+Release process:
+```
+git flow release start 1.0.0
+git tag sit-v1.0.0
+git push --tags
+#here we do SIT tests based on tag sit-v1.0.0
+
+git tag prd-v1.0.0
+#here GitHub Actions, Jenkins or other CI/CD pipeline tool should trigger `make
+deploy-all` on PROD based on prd-v
+
+#after making sure all deployed on PROD properly we close the release and push
+branches
+
+git flow release finish
+git checkout develop && git push
+git checkout main && git push
+git push --tags
+```
+
 
 More details
 --------
