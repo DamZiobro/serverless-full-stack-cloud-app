@@ -134,6 +134,9 @@ Just [set up AWS credentials](https://docs.aws.amazon.com/sdk-for-java/v1/develo
 for demo purposes and is not great Vue.js application. It should be improved by
 implementing using Vue Components, Vue Router etc. See [TODO](#TODO) section.
 
+After UI deployment we can see it here:
+![](docs/ui.png)
+
 Makefile
 --------
 **Makefile** is used in order to simplify most common development, debugging,
@@ -221,6 +224,35 @@ Releases
 Releases and creating new version of software are based on [**git flow**](https://datasift.github.io/gitflow/IntroducingGitFlow.html) principles.
 On the release branche we create tags ex. `sit-v1.0.0` (for UAT (SIT) tests) and
 `prd-v1.0.0` for release to PROD.
+
+Release process:
+```
+git flow release start 1.0.0
+git tag sit-v1.0.0
+git push --tags
+#here we do SIT tests based on tag sit-v1.0.0
+
+git tag prd-v1.0.0
+#here GitHub Actions, Jenkins or other CI/CD pipeline tool should trigger `make
+deploy-all` on PROD based on prd-v
+
+#after making sure all deployed on PROD properly we close the release and push
+branches
+
+git flow release finish
+git checkout develop && git push
+git checkout main && git push
+git push --tags
+```
+
+Log analysis
+--------
+After deployment when we use the UI and/or API and we see some errors we can
+debug it using log analysis in **AWS CloudWatch**. The log group related to
+API's Lambda function are placed in Log Group: `/aws/lambda/simple-books-catalog-api-dev`
+
+We can see them in CloudWatch in AWS Console:
+![](docs/cloud_watch_logs.png)
 
 
 More details
@@ -340,6 +372,7 @@ Lambda monitoring as on the picture:
 
 TODO
 ---------
+- fix names of DBCluster and RDS releated resources + update names in [api/util.py](api/util.py)
 - add Route53-based constant domain to the API and Website URLs
 - implement Vue.js app better => including Vue Components, Vue Router etc.
 - Authentication: AWS Cognito-based authentication on website + RESTful API
