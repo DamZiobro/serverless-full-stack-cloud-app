@@ -2,14 +2,14 @@ Shell app with Vue.js UI + Flask RESTful API + RDS Aurora PostgreSQL and IaaC-ba
 ==================
 
 This is the skeleton skeleton app containing implementation and deployment of
-Full Stack application with 3 tires: UI + API + Database deployed using Infrastructure 
+Full Stack application with 3 tires: UI + API + Database deployed into **AWS** using Infrastructure 
 as a Code (IaaC) scripts and frameworks.
 
 Summary
 --------
 _The application consists of 3 tiers_ separated and in 3 directories which could
 be deployed and developed separately:
-* **database tier** - **PostgreSQL** database deployed to AWS as RDS Aurora
+* **database tier** - **PostgreSQL** database deployed to [**AWS**](https://aws.amazon.com/) as RDS Aurora
   Serverless service using [**Serverless Framework**](https://www.serverless.com/)
 
   Database IaaC resources and code are placed in [db](db) directory
@@ -136,6 +136,85 @@ implementing using Vue Components, Vue Router etc. See [TODO](#TODO) section.
 
 Makefile
 --------
+**Makefile** is used in order to simplify most common development, debugging,
+operations and testing actions / commands. Therefore **Makefile is DevOps span**
+as it spans and automate daily actions of development and operations groups. 
+
+**Makefile** automates those actions / commands making them **single-command**
+**non-configuration-required actions**.
+
+Most useful commands:
+```
+#deplay ALL tiers: database tier, API tier and UI tier
+make deploy-all
+
+#destroy AWS resources of all 3 tiers: database tier, API tier, UI tier
+make destroy-all
+
+#deploy database tier only
+make deploy-db
+
+#deploy RESTful APi tier only
+make deploy-api
+
+#deploy User Interface tier only
+make deploy-ui
+
+#install requirements
+make requirements 
+
+#run unit tests
+make unittest
+
+#run unit tests and show coverage
+make coverage
+
+#static code analysis using pylint tool
+make lint
+
+#code security checks using bandit tool
+make security
+
+#run load tests
+make load-tests
+
+#run e2e-tests
+make e2e-tests
+
+#destroy AWS resources related to Databse Tier
+make destroy-db
+
+#destroy AWS resources related to RESTful API tier
+make destroy-api
+
+#destroy AWS resources related to User Interface tier
+make destroy-ui
+
+#run all Continous Integration tasks: code analysis, security analysis, unit tests, show coverage
+make ci
+
+#run all Continous Deployment tasks: code analysis, security analysis, unit tests, show coverage, deploy all 3 tiers, run e2e-tests and run load-tests
+make cd
+
+```
+
+Stages
+----
+You can work with app on specified stage (environment) ex. `dev`, `uat`, `prd` by passing ENV variable into the
+`make` commands ex.:
+```
+make deploy ENV=dev
+make deploy ENV=uat
+make deploy ENV=prd 
+```
+or export `ENV` variable in your terminal and use default commands ex.
+```
+export ENV=dev
+make deploy run
+```
+
+**The default stage for the app is equal to current branch name ex. master**. 
+
 
 More details
 --------
@@ -166,84 +245,13 @@ This simple project is demonstration of multiple modern technologies/methodologi
 
 This framework is based on [a Serverless Application Framework](https://www.serverless.com/)
 
-Quick start
-----
-1. [**Set up AWS credentials**](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) for your terminal
-2. **Install Serverless Application Framework** and dependencies - [Instruction](https://www.serverless.com/framework/docs/getting-started#via-npm). You can use `make serverless` command from root directory of this project (or `sudo make serverless` if you see `EACCES: permission denied`).
-3. **Deploy default app**
-```
-make deploy
-```
-4. **Run app and get logs** (logs should contain: `Received message: test_message`)
-```
-make run
-sleep 20 #wait 20 seconds until logs stream is created in AWS
-make logs
-```
-5. **Do changes** in your lambda function **and redeploy** only lambda_function1 function:
-```
-sed -i 's/test_message/NEW_TEST_MESSAGE/g' app/lambda_function1.py
-make deploy FUNC=lambda_function2
-```
-6. **Run app again and verify that logs** contains your changes (logs should contain: `Received message: NEW_TEST_MESSAGE`):
-```
-make run
-sleep 20 #wait 20 seconds until logs stream is created in AWS
-make logs
-```
-7. **Destroy app** - delete all AWS resources of your app
-```
-make destroy
-```
-
-Stages
-----
-You can work with app on specified stage (environment) ex. `dev`, `uat`, `prd` by passing ENV variable into the
-`make` commands ex.:
-```
-make deploy ENV=dev
-make deploy ENV=uat
-make deploy ENV=prd 
-```
-or export `ENV` variable in your terminal and use default commands ex.
-```
-export ENV=dev
-make deploy run
-```
-
-**The default stage for the app is equal to current branch name ex. master**. 
-
-Building and deploying AWS resources
-----
-`make deploy` will build and deploy infrastructure and code as defined in [serverless.yml](serverless.yml) file:
-
-By default resources are deployed to the default
-[stage](https://serverless-stack.com/chapters/stages-in-serverless-framework.html)
-(environment) based on current branch name ex. `master`. Thanks to that multiple users working on separate branches can deploy to
-separate AWS resources to avoid resources conflicts.
-
-After triggering the above command on `master` branch following resources will be created in your
-AWS account:
- - AWS Lambda: `myapp-master-lambda_function2`
- - AWS Lambda: `myapp-master-lambda_function1`
- - AWS SQS queue: `myapp-master-sqs-lambda_function1`
-
-
-The resources for different stages will be deployed with different names to be
-possible to test different versions of app separately. 
-For example, if you trigger `make deploy ENV=dev` following resources will be
-deployed:
- - `myapp-dev-lambda_function1`
- - `myapp-dev-lambda_function2`
- - `myapp-dev-sqs-lambda_function1`
-
 Tests
 ----
 We have following level of tests in the application:
 - `make code-checks` - checks code syntax using `pylint` and security using `bandit` 
 - `make unittest coverage` - trigger all unit tests of the code and show code coverage
 - `make e2e-tests` (NOT IMPLEMETED YET) - selenium-based tests runned after deployment
-- `make load-tests` (NOT IMPLEMENTED YET) 
+- `make load-tests` - run locust-based load tests 
 
 CI/CD
 ----
@@ -272,6 +280,8 @@ You can run all the below steps/commands using one `make cd` command:
 
 CI/CD pipelines
 --------
+**TODO: started implementation of CI/CD - still couple of things TO DO**
+
 Currently CI/CD is integrated with GitHub Actions. However you can set it up
 quickly with any other CI/CD tool and see pipelines and actions similar to the
 ones below.
