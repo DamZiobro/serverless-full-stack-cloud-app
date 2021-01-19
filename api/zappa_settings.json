@@ -14,6 +14,7 @@
             "Effect": "Allow",
             "Action": [
                 "rds-data:*",
+                "secretsmanager:DescribeSecret",
                 "secretsmanager:GetSecretValue"
             ], 
             "Resource": "*"
@@ -33,6 +34,7 @@
             "Effect": "Allow",
             "Action": [
                 "rds-data:*",
+                "secretsmanager:DescribeSecret",
                 "secretsmanager:GetSecretValue"
             ], 
             "Resource": "*"
@@ -52,6 +54,7 @@
             "Effect": "Allow",
             "Action": [
                 "rds-data:*",
+                "secretsmanager:DescribeSecret",
                 "secretsmanager:GetSecretValue"
             ], 
             "Resource": "*"

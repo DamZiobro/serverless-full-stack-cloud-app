@@ -17,6 +17,7 @@ custom:
   logRetention:
     prod: 180
     default: 14
+  DBClusterIdentifier: ${self:provider.stackName}-auroradbcluster
   DBClusterARN:
     Fn::Join:
       - ':'

@@ -19,6 +19,13 @@ def get_account_id():
     """
     return boto3.client('sts').get_caller_identity().get('Account')
 
+def get_secret_arn(secret_name):
+    """
+    Return Secret arn based on secret name
+    """
+    return boto3.client('secretsmanager').describe_secret(SecretId=secret_name).get('ARN')
+
+
 
 @contextmanager
 def get_sqlalchemy_session():
@@ -28,8 +35,8 @@ def get_sqlalchemy_session():
     env = os.getenv("ENV")
     db_name = os.getenv("db_name")
 
-    cluster_arn = f"arn:aws:rds:{region}:{account_id}:cluster:{env}-simple-book-catalog-auroradbcluster-ewg3wz2s9f48"
-    secret_arn = f"arn:aws:secretsmanager:{region}:{account_id}:secret:{env}-simple-book-catalog-AuroraClusterSecret-SQlHtO"
+    cluster_arn = f"arn:aws:rds:{region}:{account_id}:cluster:{env}-simple-book-catalog-auroradbcluster"
+    secret_arn = get_secret_arn(f"{env}-simple-book-catalog-AuroraClusterSecret")
 
     logging.info(f"Creating new SQLAlchemy engine => cluster_arn: {cluster_arn}; secret_arn: {secret_arn}")
     engine = create_engine(f'postgresql+auroradataapi://:@/{db_name}',
