@@ -360,6 +360,7 @@ Lambda monitoring as on the picture:
 
 TODO
 ---------
+- fix names of DBCluster and RDS releated resources + update names in [api/util.py](api/util.py)
 - add Route53-based constant domain to the API and Website URLs
 - implement Vue.js app better => including Vue Components, Vue Router etc.
 - Authentication: AWS Cognito-based authentication on website + RESTful API
