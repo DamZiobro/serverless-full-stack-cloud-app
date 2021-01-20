@@ -257,6 +257,15 @@ API's Lambda function are placed in Log Group: `/aws/lambda/simple-books-catalog
 We can see them in CloudWatch in AWS Console:
 ![](docs/cloud_watch_logs.png)
 
+Another method of log analysis is using `zappa tail` command. It works as Linux
+`tail` command, however it prints logs from CloudWatch of the AWS Lambda's
+function deployed by zappa package. 
+
+Usage: `zappa tail` 
+
+It could be delay of few seconds between triggering
+commands and when logs are displayed.
+
 
 More details
 --------
