@@ -91,7 +91,7 @@ specification and generated using [**flask-swagger**](https://pypi.org/project/f
 * Deployment scripts is implemented using [**Zappa**](https://github.com/Miserlou/Zappa) tool. Settings of deployment are implemented in [api/zappa_settings.json](api/zappa_settings.json) file.
 
 **CORS**:
-Please notice that in [api/books_catalog_api.py] CORS is enabled for any origin using
+Please notice that in [api/books_catalog_api.py](api/books_catalog_api.py) CORS is enabled for any origin using
 [**flask-cors**](https://flask-cors.readthedocs.io/en/latest/) plugin. It was
 enabled here as API origin is different than UI app origin. In real-world PROD
 solutions CORS should be disabled and instead the same origin/domain could be assigned
