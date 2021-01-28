@@ -68,6 +68,9 @@ security:
 	$(PYTHON_EXEC) -m bandit --version
 	$(PYTHON_EXEC) -m bandit ${APP_DIR}
 
+logs:
+	cd $(APP_DIR) && $(activate_updir) zappa tail $(ENV)
+
 code-checks: lint security
 
 deploy-api: requirements

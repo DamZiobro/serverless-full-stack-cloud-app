@@ -32,6 +32,10 @@ Framework's plugin [**serverless-finch**](https://www.npmjs.com/package/serverle
 Live Demo
 --------
 
+NOTE: This demo is not optimised hence loading data can take long. TODO: add
+HTTP Requests caching + indexes to database to improve performence of reads
+from database
+
 [**Website UI URL**](http://dev-simple-book-catalog-app-ui.s3-website-eu-west-1.amazonaws.com/)
 
 [OpenAPI-based API documentation](https://humkpy96uj.execute-api.eu-west-1.amazonaws.com/dev/apidocs/#/)
