@@ -1,4 +1,4 @@
-Vue.js UI + Flask RESTful API + RDS Aurora PostgreSQL and IaaC-based deployment and DevOps pipeline
+Vue.js UI + Flask RESTful API + RDS Aurora PostgreSQL and IaaC-based deployment and DevOps CI/CD pipeline
 ==================
 
 This is the skeleton skeleton app containing implementation and deployment of
